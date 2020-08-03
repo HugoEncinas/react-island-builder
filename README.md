@@ -1,7 +1,10 @@
 # Island Builder in React Code Challenge
 
 ## Features:
-- 11
+- Build a grid map from custom dimensions
+- Click each cell to toggle the cell with land or sea
+- Toggle switch to change terrain type
+- Count number of individual cells filled and number of islands
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

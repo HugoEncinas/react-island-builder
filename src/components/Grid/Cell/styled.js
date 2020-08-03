@@ -5,5 +5,5 @@ export const CellStyled = styled.div`
   border: 1px solid white;
   width: 30px;
   height: 30px;
-  background: ${(props) => (props.color === 0 ? 'green' : 'blue')};
+  background: ${(props) => props.color};
 `;
