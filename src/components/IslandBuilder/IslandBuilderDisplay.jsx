@@ -5,7 +5,7 @@ import Controls from '../Controls'
 import Grid from '../Grid'
 
 const IslandBuilderDisplay = ({grid, inputHandler, buildGridHandler, cellHandler, colorValue, colorSwitchHandler,
-  numberCellsFilled, numberIslands}) => (
+  numberCellsFilled, numberIslands, isLoading}) => (
   <Container>
     <Typography variant="h2" >
       Island Builder
@@ -18,7 +18,7 @@ const IslandBuilderDisplay = ({grid, inputHandler, buildGridHandler, cellHandler
     <Typography variant="h6">
       Number Islands: {`${numberIslands}`}
     </Typography>
-    <Grid grid={grid} cellHandler={cellHandler}>
+    <Grid grid={grid} cellHandler={cellHandler} isLoading={isLoading}>
     
     </Grid>
     

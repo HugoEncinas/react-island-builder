@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import IslandBuilderDisplay from './IslandBuilderDisplay';
+import getBlockChain from '../../api/getBlockChain'
 import { countNumberIslands } from '../../utils'
+import IslandBuilderDisplay from './IslandBuilderDisplay';
 
 export const IslandBuilderContainer = () => {
   const [height, setHeight] = useState(1); //rows
@@ -10,6 +11,7 @@ export const IslandBuilderContainer = () => {
   const [colorValue, setColorValue] = useState(true);
   const [numberCellsFilled, setNumberCellsFilled] = useState(0);
   const [numberIslands, setNumberIslands] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   const inputHandler = (ev, dimension) => {
     const size = ev.target.value;
@@ -59,12 +61,45 @@ export const IslandBuilderContainer = () => {
     setColorValue(!colorValue)
   }
 
+  const buildInitialGrid = (array) => {
+    const initialGrid = [];
+    const columns = array[0].hash.length;
+    const rows = 10;
+    let numberCells = 0;
+
+    for (let i = 0; i < rows; i++) {
+      initialGrid[i] = [];
+      const hash = array[i].hash;
+      for (let j = 0; j < columns; j++) {
+        const char = hash.charAt(j)
+        if(isNaN(parseInt(char))){
+          initialGrid[i][j] = -1;
+        } else {
+          initialGrid[i][j] = 0;
+          numberCells++
+        }
+      }
+    }
+    setGrid(initialGrid)
+    setIsLoading(false)
+    setNumberCellsFilled(numberCells);
+  }
+
+  useEffect(() => {
+    async function fetchData() {
+      const url = 'https://blockchain.info/latestblock?cors=true'
+      const respone = await getBlockChain(url);
+      buildInitialGrid(respone);
+    }
+    fetchData();
+  }, []);
+
   useEffect(() => {
     setNumberIslands(countNumberIslands(grid))
   }, [grid]);
 
   return (
     <IslandBuilderDisplay grid={grid} inputHandler={inputHandler} buildGridHandler={buildGridHandler} cellHandler={cellHandler}
-    colorValue={colorValue} colorSwitchHandler={colorSwitchHandler} numberCellsFilled={numberCellsFilled} numberIslands={numberIslands}></IslandBuilderDisplay>
+    colorValue={colorValue} colorSwitchHandler={colorSwitchHandler} numberCellsFilled={numberCellsFilled} numberIslands={numberIslands} isLoading={isLoading}></IslandBuilderDisplay>
   )
 };
